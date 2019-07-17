@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using luizalabs_api_wishlist.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace luizalabs_api_wishlist.Controllers
 {
@@ -21,14 +22,25 @@ namespace luizalabs_api_wishlist.Controllers
         }
 
 
+        /// <summary>
+        /// Get a list of users
+        /// </summary>
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<User>>> Get(int page_size, int page)
         {
             var skip = (page - 1) * page_size;
             return await _context.Users.Skip(skip).Take(page_size).ToListAsync();
         }
 
+        /// <summary>
+        /// Get user by id
+        /// </summary>        
         [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<User>> Get(long id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -39,7 +51,12 @@ namespace luizalabs_api_wishlist.Controllers
             return user;
         }
 
+        /// <summary>
+        /// Add new user
+        /// </summary>
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult> Post([FromBody]User item)
         {
             _context.Users.Add(item);

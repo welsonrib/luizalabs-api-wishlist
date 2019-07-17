@@ -5,6 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using luizalabs_api_wishlist.Models;
+using Microsoft.Extensions.Logging;
+using luizalabs_api_wishlist.Controllers;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Reflection;
+using System.IO;
+using System;
 
 namespace luizalabs_api_wishlist
 {
@@ -20,8 +26,26 @@ namespace luizalabs_api_wishlist
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<dbContext>(opt =>  opt.UseInMemoryDatabase("luizalabs-wishlist"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<dbContext>(opt =>  opt.UseInMemoryDatabase("luizalabs-wishlist"));
+
+            // Set up dependency injection for controller's logger
+            //services.AddScoped<ILogger, Logger<UsersController>>();
+
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info { Title = "Wishlist API", Version = "v1" });
+
+                // Get xml comments path
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                // Set xml path
+                options.IncludeXmlComments(xmlPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,6 +55,15 @@ namespace luizalabs_api_wishlist
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Wishlist API V1");
+            });
 
             app.UseMvc();
         }

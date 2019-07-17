@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using luizalabs_api_wishlist.Models;
@@ -21,15 +20,25 @@ namespace luizalabs_api_wishlist.Controllers
         }
 
 
-        // GET api/values
+        /// <summary>
+        /// Get a list of users
+        /// </summary>
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<Product>>> Get(int page_size, int page)
         {
             var skip = (page - 1) * page_size;
             return await _context.Products.Skip(skip).Take(page_size).ToListAsync();
         }
 
+        /// <summary>
+        /// Get product by id
+        /// </summary>
         [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<Product>> Get(long id)
         {
             var product = await _context.Products.FindAsync(id);
@@ -40,7 +49,12 @@ namespace luizalabs_api_wishlist.Controllers
             return product;
         }
 
+        /// <summary>
+        /// Add new product
+        /// </summary>
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult> Post([FromBody] Product item)
         {
             _context.Products.Add(item);

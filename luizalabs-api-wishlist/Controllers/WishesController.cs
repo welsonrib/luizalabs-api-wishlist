@@ -21,15 +21,24 @@ namespace luizalabs_api_wishlist.Controllers
         }
 
 
-        // GET api/values
+        /// <summary>
+        /// Get a list of wishes by user
+        /// </summary>
         [HttpGet("{userId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<Product>>> Get(long userId, int page_size, int page)
         {
             var skip = (page - 1) * page_size;
             return await _context.Wishes.Where(c => c.userId == c.userId).Skip(skip).Take(page_size).Select (c => c.product).ToListAsync();
         }
 
+        /// <summary>
+        /// Add new wish
+        /// </summary>
         [HttpPost("{userId}")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult> Post(long userId, [FromBody] List<Product> idProduct)
         {
             var wishes = new List<Wish>();
@@ -42,9 +51,13 @@ namespace luizalabs_api_wishlist.Controllers
             return StatusCode(201);
         }
 
-
+        /// <summary>
+        /// remove wish
+        /// </summary>
         [HttpDelete("{userId}/{productId}")]
-        public async Task<IActionResult> DeleteTodoItem(long userId, long productId)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> Delete(long userId, long productId)
         {
             var wish = await _context.Wishes.FirstOrDefaultAsync(c => c.userId ==userId && c.productId == productId);
             if (wish == null)

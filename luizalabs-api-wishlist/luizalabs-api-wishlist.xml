@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>luizalabs-api-wishlist</name>
+    </assembly>
+    <members>
+        <member name="M:luizalabs_api_wishlist.Controllers.ProductsController.Get(System.Int32,System.Int32)">
+            <summary>
+            Get a list of users
+            </summary>
+        </member>
+        <member name="M:luizalabs_api_wishlist.Controllers.ProductsController.Get(System.Int64)">
+            <summary>
+            Get product by id
+            </summary>
+        </member>
+        <member name="M:luizalabs_api_wishlist.Controllers.ProductsController.Post(luizalabs_api_wishlist.Models.Product)">
+            <summary>
+            Add new product
+            </summary>
+        </member>
+        <member name="M:luizalabs_api_wishlist.Controllers.UsersController.Get(System.Int32,System.Int32)">
+            <summary>
+            Get a list of users
+            </summary>
+        </member>
+        <member name="M:luizalabs_api_wishlist.Controllers.UsersController.Get(System.Int64)">
+            <summary>
+            Get user by id
+            </summary>        
+        </member>
+        <member name="M:luizalabs_api_wishlist.Controllers.UsersController.Post(luizalabs_api_wishlist.Models.User)">
+            <summary>
+            Add new user
+            </summary>
+        </member>
+        <member name="M:luizalabs_api_wishlist.Controllers.WishesController.Get(System.Int64,System.Int32,System.Int32)">
+            <summary>
+            Get a list of wishes by user
+            </summary>
+        </member>
+        <member name="M:luizalabs_api_wishlist.Controllers.WishesController.Post(System.Int64,System.Collections.Generic.List{luizalabs_api_wishlist.Models.Product})">
+            <summary>
+            Add new wish
+            </summary>
+        </member>
+        <member name="M:luizalabs_api_wishlist.Controllers.WishesController.Delete(System.Int64,System.Int64)">
+            <summary>
+            remove wish
+            </summary>
+        </member>
+    </members>
+</doc>
