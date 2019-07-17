@@ -4,13 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using luizalabs_api_wishlist.Models;
-using Microsoft.Extensions.Logging;
-using luizalabs_api_wishlist.Controllers;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
 using System.IO;
 using System;
+using luizalabs_api_wishlist.Models.Entities;
 
 namespace luizalabs_api_wishlist
 {
@@ -29,10 +27,6 @@ namespace luizalabs_api_wishlist
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<dbContext>(opt =>  opt.UseInMemoryDatabase("luizalabs-wishlist"));
-
-            // Set up dependency injection for controller's logger
-            //services.AddScoped<ILogger, Logger<UsersController>>();
-
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(options =>

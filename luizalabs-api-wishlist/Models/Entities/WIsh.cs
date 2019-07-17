@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace luizalabs_api_wishlist.Models
+﻿
+namespace luizalabs_api_wishlist.Models.Entities
 {
     public class Wish
     {
@@ -11,6 +7,7 @@ namespace luizalabs_api_wishlist.Models
         public long userId { get; set; }
         public long productId { get; set; }
 
+        public virtual User user { get; set; }
         public virtual Product product { get; set; }
     }
 }

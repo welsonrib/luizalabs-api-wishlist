@@ -14,7 +14,7 @@
             Get product by id
             </summary>
         </member>
-        <member name="M:luizalabs_api_wishlist.Controllers.ProductsController.Post(luizalabs_api_wishlist.Models.Product)">
+        <member name="M:luizalabs_api_wishlist.Controllers.ProductsController.Post(luizalabs_api_wishlist.Models.Entities.Product)">
             <summary>
             Add new product
             </summary>
@@ -29,7 +29,7 @@
             Get user by id
             </summary>        
         </member>
-        <member name="M:luizalabs_api_wishlist.Controllers.UsersController.Post(luizalabs_api_wishlist.Models.User)">
+        <member name="M:luizalabs_api_wishlist.Controllers.UsersController.Post(luizalabs_api_wishlist.Models.Entities.User)">
             <summary>
             Add new user
             </summary>
@@ -39,7 +39,7 @@
             Get a list of wishes by user
             </summary>
         </member>
-        <member name="M:luizalabs_api_wishlist.Controllers.WishesController.Post(System.Int64,System.Collections.Generic.List{luizalabs_api_wishlist.Models.Product})">
+        <member name="M:luizalabs_api_wishlist.Controllers.WishesController.Post(System.Int64,System.Collections.Generic.List{luizalabs_api_wishlist.Models.Requests.WishProduct})">
             <summary>
             Add new wish
             </summary>
