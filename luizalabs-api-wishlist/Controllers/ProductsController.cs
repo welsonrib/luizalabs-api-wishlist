@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using luizalabs_api_wishlist.Models.Entities;
+using luizalabs_api_wishlist.Models.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +12,11 @@ namespace luizalabs_api_wishlist.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly dbContext _context;
+        private readonly IProductRepository _productRepository;
 
-        public ProductsController(dbContext context)
+        public ProductsController(IProductRepository productRepository)
         {
-            _context = context;
-
+            _productRepository = productRepository;
         }
 
 
@@ -25,11 +25,13 @@ namespace luizalabs_api_wishlist.Controllers
         /// </summary>
         [HttpGet]
         [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<Product>>> Get(int page_size, int page)
         {
-            var skip = (page - 1) * page_size;
-            return await _context.Products.Skip(skip).Take(page_size).ToListAsync();
+            var products = await _productRepository.GetProducts(page_size, page);
+            if (products.Count() == 0) return NoContent();
+            return Ok(products);
         }
 
         /// <summary>
@@ -41,7 +43,7 @@ namespace luizalabs_api_wishlist.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult<Product>> Get(long id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productRepository.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
@@ -57,9 +59,7 @@ namespace luizalabs_api_wishlist.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult> Post([FromBody] Product item)
         {
-            _context.Products.Add(item);
-            await _context.SaveChangesAsync();
-            return StatusCode(201);
+            return StatusCode(201, await _productRepository.AddProduct(item));
         }
 
      }

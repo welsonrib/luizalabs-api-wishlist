@@ -9,6 +9,9 @@ using System.Reflection;
 using System.IO;
 using System;
 using luizalabs_api_wishlist.Models.Entities;
+using luizalabs_api_wishlist.Models.Repositories.Interfaces;
+using luizalabs_api_wishlist.Models.Repositories;
+using luizalabs_api_wishlist.Extensions;
 
 namespace luizalabs_api_wishlist
 {
@@ -40,6 +43,17 @@ namespace luizalabs_api_wishlist
                 // Set xml path
                 options.IncludeXmlComments(xmlPath);
             });
+
+            // user repository
+            services.AddScoped<IUserRepository>(factory => {
+                return new UserRepository(Configuration.GetConnectionString("MySqlDbConnection"));
+            });
+
+            // product repository
+            services.AddScoped<IProductRepository>(factory => {
+                return new ProductRepository(Configuration.GetConnectionString("MySqlDbConnection"));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +72,8 @@ namespace luizalabs_api_wishlist
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Wishlist API V1");
             });
+
+            app.ConfigureExceptionHandler();
 
             app.UseMvc();
         }
