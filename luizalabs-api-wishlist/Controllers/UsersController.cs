@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using luizalabs_api_wishlist.Models.Entities;
+using luizalabs_api_wishlist.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +12,11 @@ namespace luizalabs_api_wishlist.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly dbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UsersController(dbContext context)
+        public UsersController(IUserRepository userRepository)
         {
-            _context = context;
-
+            _userRepository = userRepository;
         }
 
 
@@ -25,11 +25,13 @@ namespace luizalabs_api_wishlist.Controllers
         /// </summary>
         [HttpGet]
         [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<User>>> Get(int page_size, int page)
         {
-            var skip = (page - 1) * page_size;
-            return await _context.Users.Skip(skip).Take(page_size).ToListAsync();
+            var users = await _userRepository.GetUsers(page_size, page);
+            if (users.Count() == 0) return NoContent();
+            return Ok(users);
         }
 
         /// <summary>
@@ -41,7 +43,7 @@ namespace luizalabs_api_wishlist.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult<User>> Get(long id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _userRepository.GetUser(id);
             if (user == null)
             {
                 return NotFound();
@@ -57,9 +59,7 @@ namespace luizalabs_api_wishlist.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult> Post([FromBody]User item)
         {
-            _context.Users.Add(item);
-            await _context.SaveChangesAsync();
-            return StatusCode(201);
+            return StatusCode(201, await _userRepository.AddUser(item));
         }
 
      }
