@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using luizalabs_api_wishlist.Models.Entities;
-using luizalabs_api_wishlist.Models.Repositories.Interfaces;
+using luizalabs_api_wishlist.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

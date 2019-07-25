@@ -1,45 +1,46 @@
 ﻿using Dapper;
 using luizalabs_api_wishlist.Models.Entities;
-using luizalabs_api_wishlist.Models.Repositories.Interfaces;
+using luizalabs_api_wishlist.Repositories.Interfaces;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace luizalabs_api_wishlist.Models.Repositories
+namespace luizalabs_api_wishlist.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class UserRepository : IUserRepository
     {
         private readonly string _connectionString;
-        public ProductRepository(string connectionString)
+        public UserRepository(string connectionString)
         {
             _connectionString = connectionString;  
         }
 
-        public async Task<IEnumerable<Product>> GetProducts(int pageSize, int page)
+        public async Task<IEnumerable<User>> GetUsers(int pageSize, int page)
         {
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 var skip = (page - 1) * pageSize;
-                return await conn.QueryAsync<Product>($"SELECT * FROM Products LIMIT {skip}, {pageSize}");
+                return await conn.QueryAsync<User>($"SELECT * FROM Users LIMIT {skip}, {pageSize}");
             }
         }
 
-        public async Task<Product> GetProduct(long id)
+        public async Task<User> GetUser(long id)
         {
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
-                return await conn.QueryFirstOrDefaultAsync<Product>($"SELECT * FROM Products WHERE id = {id}");
+                return await conn.QueryFirstOrDefaultAsync<User>($"SELECT * FROM Users WHERE id = {id}");
             }
         }
 
-        public async Task<long> AddProduct(Product product)
+        public async Task<long> AddUser(User user)
         {
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
                 MySqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO Products(name) VALUES(@name)";
-                cmd.Parameters.AddWithValue("@name", product.name);
+                cmd.CommandText = "INSERT INTO Users(name, email) VALUES(@name, @email)";
+                cmd.Parameters.AddWithValue("@name", user.name);
+                cmd.Parameters.AddWithValue("@email", user.email);
                 await cmd.ExecuteNonQueryAsync();
                 conn.Close();
                 return cmd.LastInsertedId;

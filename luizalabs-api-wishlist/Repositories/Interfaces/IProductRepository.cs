@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace luizalabs_api_wishlist.Models.Repositories.Interfaces
+namespace luizalabs_api_wishlist.Repositories.Interfaces
 {
     public interface IProductRepository
     {
